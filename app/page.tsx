@@ -9,11 +9,18 @@ import About from "./components/about";
 import Stats from "./components/Stats";
 import Hero from "./components/Hero";
 import Navbar from "./components/Navbar";
+import ScrollProgress from "./components/ScrollProgress";
+import MouseGlow from "./components/MouseGlow";
 
 export default function Home() {
   return (
     <>
       <Navbar />
+      <ScrollProgress />
+      <MouseGlow />
+    
+    
+
 <Hero />
 <Stats />
 <About />
@@ -25,9 +32,6 @@ export default function Home() {
 <Contact />
 <Footer />
 
-
-      <main className="min-h-screen bg-[#081C15] text-white">
-      </main>
       </>
     
   );

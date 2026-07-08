@@ -1,39 +1,109 @@
+"use client";
+
+import { motion } from "framer-motion";
+import {
+  BookOpen,
+  Building2,
+  HeartHandshake,
+  Users,
+  MoonStar,
+  HandHelping,
+} from "lucide-react";
+
 export default function Programs() {
   const programs = [
     {
       title: "Madarsa Education",
-      desc: "Quran, Hifz, Tajweed and Islamic studies for children."
+      desc: "Quran, Hifz, Tajweed and Islamic studies for children.",
+      icon: BookOpen,
     },
     {
       title: "Masjid Services",
-      desc: "Daily prayers, Jumu'ah, Taraweeh and Islamic guidance."
+      desc: "Daily prayers, Jumu'ah, Taraweeh and Islamic guidance.",
+      icon: Building2,
     },
     {
       title: "Charity & Welfare",
-      desc: "Helping needy families with food, clothes and financial support."
+      desc: "Helping needy families with food, clothes and financial support.",
+      icon: HeartHandshake,
     },
     {
       title: "Community Events",
-      desc: "Islamic lectures, youth programs and educational seminars."
+      desc: "Islamic lectures, youth programs and educational seminars.",
+      icon: Users,
     },
     {
       title: "Ramadan Activities",
-      desc: "Iftar arrangements, Taraweeh and Quran programs."
+      desc: "Iftar arrangements, Taraweeh and Quran programs.",
+      icon: MoonStar,
     },
     {
       title: "Volunteer Team",
-      desc: "Join us in serving the community for the sake of Allah."
-    }
+      desc: "Join us in serving the community for the sake of Allah.",
+      icon: HandHelping,
+    },
   ];
 
   return (
-    <section id="programs" className="bg-[#081c15] py-24 px-6 text-white">
-      <div className="max-w-7xl mx-auto">
-        <h2 className="text-5xl font-bold text-center text-yellow-400 mb-14">
-          Our Programs
-        </h2>
+    <section
+      id="programs"
+      className="relative overflow-hidden bg-[#081C15] py-24 md:py-32 px-6 text-white"
+    >
 
-        <div className="grid md:grid-cols-3 gap-8">
+      {/* Background Glow */}
+
+      <motion.div
+        className="absolute -top-20 left-0 w-80 h-80 rounded-full bg-yellow-500/10 blur-3xl"
+        animate={{
+          x: [0, 40, 0],
+          y: [0, 30, 0],
+        }}
+        transition={{
+          duration: 12,
+          repeat: Infinity,
+          ease: "easeInOut",
+        }}
+      />
+
+      <motion.div
+        className="absolute bottom-0 right-0 w-96 h-96 rounded-full bg-green-500/10 blur-3xl"
+        animate={{
+          x: [0, -40, 0],
+          y: [0, -20, 0],
+        }}
+        transition={{
+          duration: 14,
+          repeat: Infinity,
+          ease: "easeInOut",
+        }}
+      />
+
+      <div className="relative z-10 max-w-7xl mx-auto">
+
+        <motion.h2
+          initial={{ opacity: 0, y: 40 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          transition={{ duration: 0.8 }}
+          className="text-4xl md:text-5xl font-bold text-center text-yellow-400"
+        >
+          Our Programs
+        </motion.h2>
+
+        <motion.p
+          initial={{ opacity: 0, y: 30 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          transition={{ delay: 0.2, duration: 0.8 }}
+          className="max-w-3xl mx-auto mt-6 text-center text-gray-300 leading-8"
+        >
+          Serving the Ummah through education, worship, charity,
+          community engagement and sincere service for the pleasure
+          of Allah ﷻ.
+        </motion.p>
+
+        <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8 mt-16">
+       
           {programs.map((item) => (
             <div
   key={item.title}
