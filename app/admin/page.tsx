@@ -139,6 +139,19 @@ console.log(result.user.email);
     </button>
   </Link>
 </div>
+<div className="group bg-[#112D20] p-6 rounded-2xl border border-yellow-500">
+  <h2 className="text-2xl font-bold mb-3">
+    ❓ Ask Islam
+  </h2>
+
+  <p>Add, edit and delete Islamic questions and answers.</p>
+
+  <Link href="/admin/ask-islam">
+    <button className="mt-5 bg-yellow-500 text-black px-5 py-2 rounded-lg">
+      Edit
+    </button>
+  </Link>
+</div>
       </div>
     </main>
   );

@@ -6,7 +6,7 @@ export default function Hero() {
   return (
     <section
       id="home"
-      className="relative min-h-screen flex items-center justify-center overflow-hidden bg-gradient-to-br from-[#071A12] via-[#0B241A] to-[#123524] text-white pt-24 px-6"
+      className="relative min-h-screen flex items-center justify-center overflow-hidden bg-gradient-to-br from-[#071A12] via-[#0B241A] to-[#123524] text-white pt-40 md:pt-28 px-6"
     >
       {/* Floating Orb 1 */}
 <motion.div
@@ -299,31 +299,7 @@ export default function Hero() {
 
       </motion.div>
 
-<motion.div
-  className="absolute bottom-8 left-1/2 -translate-x-1/2 flex flex-col items-center"
-  animate={{ y: [0, 10, 0] }}
-  transition={{
-    duration: 2,
-    repeat: Infinity,
-  }}
->
-  <span className="text-gray-400 text-sm mb-2">
-    Scroll Down
-  </span>
 
-  <div className="w-6 h-10 rounded-full border border-yellow-400 flex justify-center">
-    <motion.div
-      className="w-2 h-2 rounded-full bg-yellow-400 mt-2"
-      animate={{
-        y: [0, 14, 0],
-      }}
-      transition={{
-        duration: 1.5,
-        repeat: Infinity,
-      }}
-    />
-  </div>
-</motion.div>
 
     </section>
   );

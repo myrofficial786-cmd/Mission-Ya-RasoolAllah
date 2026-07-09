@@ -45,7 +45,9 @@ export default function Contact() {
     href="mailto:myrofficial786@gmail.com"
     className="flex items-center gap-4 bg-[#081C15] p-5 rounded-xl border border-yellow-500 hover:bg-[#0F2A21] transition"
   >
-    <Mail className="text-yellow-400" />
+    <Mail size={21} 
+    className="text-yellow-400 flex-shrink-0"
+    />
     <div>
       <p className="text-sm text-gray-400">Email</p>
       <p className="font-semibold">myrofficial786@gmail.com</p>
