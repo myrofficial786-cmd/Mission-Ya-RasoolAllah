@@ -101,10 +101,14 @@ export default function AdminAskIslam() {
 
     const snapshot = await getDocs(q);
 
-    const list = snapshot.docs.map((doc) => ({
-      id: doc.id,
-      ...(doc.data() as Omit<AskIslamItem, "id">),
-    }));
+    const list = snapshot.docs.map((doc) => {
+  const { id, ...data } = doc.data() as any;
+
+  return {
+    ...data,
+    id: doc.id,
+  };
+});
 
     setQuestions(list);
 
@@ -116,10 +120,14 @@ export default function AdminAskIslam() {
       collection(db, "userQuestions")
     );
 
-    const list = snapshot.docs.map((doc) => ({
-      id: doc.id,
-      ...(doc.data() as PendingQuestion),
-    }));
+    const list = snapshot.docs.map((doc) => {
+  const { id, ...data } = doc.data() as any;
+
+  return {
+    ...data,
+    id: doc.id,
+  };
+});
 
     setPendingQuestions(list);
 
