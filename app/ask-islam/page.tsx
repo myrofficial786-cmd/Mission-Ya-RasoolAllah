@@ -97,14 +97,18 @@ export default function AskIslam() {
 
             <div
               key={item.id}
-              className="bg-[#112D20] border border-yellow-500 rounded-2xl p-6"
+              className="bg-[#112D20] border border-yellow-500 rounded-2xl p-6 overflow-hidden"
             >
 
-              <h3 className="text-2xl font-bold text-yellow-400">
+              <h3 className="text-2xl font-bold text-yellow-400 break-all whitespace-pre-wrap w-full"
+              style={{ overflowWrap: "anywhere" }}
+              >
                 {item.question}
               </h3>
 
-              <p className="mt-4 whitespace-pre-line">
+              <p className="mt-4 whitespace-pre-wrap w-full"
+              style={{ overflowWrap: "anywhere" }}
+              >
                 {item.answer}
               </p>
 

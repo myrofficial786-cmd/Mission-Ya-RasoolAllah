@@ -89,7 +89,7 @@ export default function AdminAskIslam() {
       );
     }
 
-    return data.secure_url;
+    return data.secure_url.replace(/\.\w+$/, ".mp3");
   };
 
   const loadQuestions = async () => {
@@ -101,14 +101,10 @@ export default function AdminAskIslam() {
 
     const snapshot = await getDocs(q);
 
-    const list = snapshot.docs.map((doc) => {
-  const { id, ...data } = doc.data() as any;
-
-  return {
-    ...data,
-    id: doc.id,
-  };
-});
+    const list = snapshot.docs.map((doc) => ({
+      id: doc.id,
+      ...(doc.data() as Omit<AskIslamItem, "id">),
+    }));
 
     setQuestions(list);
 
@@ -298,10 +294,10 @@ export default function AdminAskIslam() {
 
             <div
               key={item.id}
-              className="bg-[#081C15] border border-yellow-500 rounded-xl p-6"
+              className="bg-[#081C15] border border-yellow-500 rounded-xl p-6 overflow-hidden"
             >
 
-              <h3 className="text-xl font-bold">
+              <h3 className="text-xl font-bold break-all whitespace-pre-wrap">
                 {item.question}
               </h3>
 
@@ -330,7 +326,7 @@ export default function AdminAskIslam() {
 
                   <input
                     type="file"
-                    accept="audio/*"
+                    accept="audio/*,video/mp4,.mp4"
                     onChange={(e) => {
                       if (e.target.files?.length) {
                         setAudioFile(e.target.files[0]);
@@ -399,14 +395,14 @@ export default function AdminAskIslam() {
 
           <div
             key={item.id}
-            className="bg-[#112D20] border border-yellow-500 rounded-2xl p-6"
+            className="bg-[#112D20] border border-yellow-500 rounded-2xl p-6 overflow-hidden"
           >
 
-            <h2 className="text-2xl font-bold text-yellow-400">
+            <h2 className="text-2xl font-bold text-yellow-400 break-all whitespace-pre-wrap w-full">
               {item.question}
             </h2>
 
-            <p className="mt-4 whitespace-pre-line">
+            <p className="mt-4 whitespace-pre-wrap break-all w-full">
               {item.answer}
             </p>
 
