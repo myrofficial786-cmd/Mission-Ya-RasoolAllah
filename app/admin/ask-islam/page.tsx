@@ -112,18 +112,17 @@ export default function AdminAskIslam() {
 
   const loadPendingQuestions = async () => {
 
-    const snapshot = await getDocs(
-      collection(db, "userQuestions")
+    const q = query(
+      collection(db, "userQuestions"),
+      orderBy("createdAt", "desc")
     );
 
-    const list = snapshot.docs.map((doc) => {
-  const { id, ...data } = doc.data() as any;
+    const snapshot = await getDocs(q);
 
-  return {
-    ...data,
-    id: doc.id,
-  };
-});
+    const list = snapshot.docs.map((doc) => ({
+      id: doc.id,
+      ...(doc.data() as Omit<PendingQuestion, "id">),
+    }));
 
     setPendingQuestions(list);
 
@@ -220,7 +219,31 @@ export default function AdminAskIslam() {
 
     await deleteDoc(doc(db, "askIslam", id));
 
-    loadQuestions();
+    await loadQuestions();
+
+  };
+
+  const deletePendingQuestion = async (id: string) => {
+
+    if (!confirm("Delete this question?")) return;
+
+    try {
+
+      await deleteDoc(doc(db, "userQuestions", id));
+
+      setPendingQuestions((prev) =>
+        prev.filter((q) => q.id !== id)
+      );
+
+      alert("Question deleted successfully.");
+
+    } catch (error) {
+
+      console.error(error);
+
+      alert("Failed to delete question.");
+
+    }
 
   };
 
@@ -297,16 +320,30 @@ export default function AdminAskIslam() {
               className="bg-[#081C15] border border-yellow-500 rounded-xl p-6 overflow-hidden"
             >
 
-              <h3 className="text-xl font-bold break-all whitespace-pre-wrap">
+              <h3
+                className="text-xl font-bold whitespace-pre-wrap"
+                style={{ overflowWrap: "anywhere" }}
+              >
                 {item.question}
               </h3>
 
-              <button
-                onClick={() => answerPending(item)}
-                className="mt-4 bg-yellow-500 text-black px-5 py-2 rounded-lg font-semibold hover:bg-yellow-400"
-              >
-                Answer This Question
-              </button>
+              <div className="flex flex-wrap gap-3 mt-5">
+
+                <button
+                  onClick={() => answerPending(item)}
+                  className="bg-yellow-500 text-black px-5 py-2 rounded-lg font-semibold hover:bg-yellow-400"
+                >
+                  Answer This Question
+                </button>
+
+                <button
+                  onClick={() => deletePendingQuestion(item.id)}
+                  className="bg-red-600 text-white px-5 py-2 rounded-lg font-semibold hover:bg-red-700"
+                >
+                  Delete
+                </button>
+
+              </div>
 
               {expandedQuestionId === item.id && (
 
@@ -326,7 +363,7 @@ export default function AdminAskIslam() {
 
                   <input
                     type="file"
-                    accept="audio/*,video/mp4,.mp4"
+                    accept="audio/*,.mp3,.wav,.m4a,.mp4,video/mp4"
                     onChange={(e) => {
                       if (e.target.files?.length) {
                         setAudioFile(e.target.files[0]);
@@ -335,12 +372,12 @@ export default function AdminAskIslam() {
                     className="mb-6 w-full"
                   />
 
-                  <div className="flex gap-3">
+                  <div className="flex flex-wrap gap-3">
 
                     <button
                       onClick={saveQuestion}
                       disabled={loading}
-                      className="bg-yellow-500 text-black px-6 py-3 rounded-lg font-bold hover:bg-yellow-400"
+                      className="bg-yellow-500 text-black px-6 py-3 rounded-lg font-bold hover:bg-yellow-400 disabled:opacity-50"
                     >
                       {loading
                         ? "Publishing..."
@@ -391,64 +428,70 @@ export default function AdminAskIslam() {
       </h2>
       <div className="space-y-6">
 
-        {filteredQuestions.map((item) => (
+  {filteredQuestions.map((item) => (
 
-          <div
-            key={item.id}
-            className="bg-[#112D20] border border-yellow-500 rounded-2xl p-6 overflow-hidden"
-          >
+    <div
+      key={item.id}
+      className="bg-[#112D20] border border-yellow-500 rounded-2xl p-6 overflow-hidden"
+    >
 
-            <h2 className="text-2xl font-bold text-yellow-400 break-all whitespace-pre-wrap w-full">
-              {item.question}
-            </h2>
+      <h2
+        className="text-2xl font-bold text-yellow-400 whitespace-pre-wrap"
+        style={{ overflowWrap: "anywhere" }}
+      >
+        {item.question}
+      </h2>
 
-            <p className="mt-4 whitespace-pre-wrap break-all w-full">
-              {item.answer}
-            </p>
+      <p
+        className="mt-4 whitespace-pre-wrap"
+        style={{ overflowWrap: "anywhere" }}
+      >
+        {item.answer}
+      </p>
 
-            {item.audioUrl && (
-              <audio
-                controls
-                className="mt-5 w-full"
-              >
-                <source
-                  src={item.audioUrl}
-                />
-                Your browser does not support the audio element.
-              </audio>
-            )}
+      {item.audioUrl && (
+        <audio
+          controls
+          className="mt-5 w-full"
+        >
+          <source
+            src={item.audioUrl}
+          />
+          Your browser does not support the audio element.
+        </audio>
+      )}
 
-            <div className="flex gap-4 mt-6">
+      <div className="flex flex-wrap gap-4 mt-6">
 
-              <button
-                onClick={() => editQuestion(item)}
-                className="bg-yellow-500 text-black px-5 py-2 rounded-lg font-semibold hover:bg-yellow-400"
-              >
-                Edit
-              </button>
+        <button
+          onClick={() => editQuestion(item)}
+          className="bg-yellow-500 text-black px-5 py-2 rounded-lg font-semibold hover:bg-yellow-400"
+        >
+          Edit
+        </button>
 
-              <button
-                onClick={() => deleteQuestion(item.id)}
-                className="bg-red-600 px-5 py-2 rounded-lg font-semibold hover:bg-red-500"
-              >
-                Delete
-              </button>
-
-            </div>
-
-          </div>
-
-        ))}
-
-        {filteredQuestions.length === 0 && (
-
-          <div className="text-center text-gray-400 py-10">
-            No published questions found.
-          </div>
-
-        )}
+        <button
+          onClick={() => deleteQuestion(item.id)}
+          className="bg-red-600 text-white px-5 py-2 rounded-lg font-semibold hover:bg-red-700"
+        >
+          Delete
+        </button>
 
       </div>
+
+    </div>
+
+  ))}
+
+  {filteredQuestions.length === 0 && (
+
+    <div className="text-center text-gray-400 py-10">
+      No published questions found.
+    </div>
+
+  )}
+
+</div>
 
     </div>
 
